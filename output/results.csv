@@ -1,0 +1,3 @@
+country,regionName,city,zip,lat,lon,timezone,isp,org,mobile,proxy,hosting,query,rdns
+United States,Virginia,Ashburn,20149,39.03,-77.5,America/New_York,Google LLC,Google Public DNS,False,True,True,8.8.8.8,dns.google
+Australia,Queensland,South Brisbane,4101,-27.4766,153.0166,Australia/Brisbane,"Cloudflare, Inc",APNIC and Cloudflare DNS Resolver project,False,False,True,1.1.1.1,one.one.one.one
