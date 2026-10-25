@@ -1,31 +1,39 @@
-name: Build LeiwaundOS v2.0
-on: [push]
+name: Build LeiwaundOS
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+permissions:
+  contents: write
 jobs:
-  build-windows:
-    runs-on: windows-latest
+  build:
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - run: pip install customtkinter pillow pyinstaller requests folium
-      - run: pyinstaller --noconsole --onefile --icon=icon.ico --name=LeiwaundOS_v2.0_Windows main.py
-      - uses: actions/upload-artifact@v4
-        with:
-          name: LeiwaundOS-Windows-v2.0
-          path: dist/LeiwaundOS_v2.0_Windows.exe
-  build-linux:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
+      - run: pip install pyinstaller
       - run: |
-          pip install customtkinter pillow pyinstaller requests folium
-          sudo apt-get update && sudo apt-get install -y python3-tk
-      - run: pyinstaller --noconsole --onefile --icon=icon.png --name=LeiwaundOS_v2.0_Linux main.py
+          pyinstaller --onefile --name LeiwaundOS src/leiwaund_app_v2.py --noconfirm || pyinstaller --onefile --name LeiwaundOS screenshot_tool.py --noconfirm
+        shell: bash
       - uses: actions/upload-artifact@v4
         with:
-          name: LeiwaundOS-Linux-v2.0
-          path: dist/LeiwaundOS_v2.0_Linux
+          name: LeiwaundOS-${{ matrix.os }}
+          path: dist/
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: artifacts/**/*
+          generate_release_notes: true

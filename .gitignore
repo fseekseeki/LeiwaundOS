@@ -11,3 +11,4 @@ output/
 .env
 venv/
 .venv/
+output/
