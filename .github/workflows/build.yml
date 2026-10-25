@@ -16,9 +16,9 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - run: pip install pyinstaller
+      - run: pip install pyinstaller customtkinter pillow requests
       - run: |
-          pyinstaller --onefile --name LeiwaundOS src/leiwaund_app_v2.py --noconfirm || pyinstaller --onefile --name LeiwaundOS screenshot_tool.py --noconfirm
+          pyinstaller --onefile --name LeiwaundOS src/leiwaund_app_v2.py --noconfirm --hidden-import=customtkinter --collect-all customtkinter || pyinstaller --onefile --name LeiwaundOS screenshot_tool.py --noconfirm
         shell: bash
       - uses: actions/upload-artifact@v4
         with:
