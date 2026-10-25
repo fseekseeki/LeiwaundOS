@@ -3,8 +3,11 @@ dist/
 __pycache__/
 *.pyc
 *.pyo
-output/
 *.spec
+*.ico
+*.png
+output/
 *.log
 .env
 venv/
+.venv/
