@@ -13,3 +13,5 @@ venv/
 .venv/
 output/
 *.exe
+*.exe
+LeiwaundOS-App/LeiwaundOS.db
